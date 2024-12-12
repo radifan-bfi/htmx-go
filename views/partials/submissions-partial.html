@@ -1,0 +1,14 @@
+{{define "partials/submissions-partial.html"}}
+    {{if .Submissions}}
+        {{range $index, $Submission := .Submissions}}
+        <tr {{ if last $index $.Submissions }} hx-get="/{{$.FormID}}/submissions?page={{$.NextPage}}&pageSize=10"
+            hx-trigger="revealed"
+            hx-swap="afterend"
+            hx-indicator="#loading-indicator" {{end}}>
+            <td>#{{.ID}}</td>
+            <td>{{.CreatedAt.Format "Jan 02, 2006 15:04:05"}}</td>
+            <td><pre class="uk-background-muted uk-padding-small uk-margin-remove"><code>{{.SubmittedValues}}</code></pre></td>
+        </tr>
+        {{end}}
+    {{end}}
+{{end}}

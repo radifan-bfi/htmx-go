@@ -1,0 +1,38 @@
+{{define "content"}}
+<div class="uk-card uk-card-default uk-card-body">
+    <div class="uk-flex uk-flex-middle uk-margin-bottom">
+        <h1 class="uk-card-title">Form Schemas</h1>
+        <div class="uk-margin-left uk-margin-auto-left">
+            <a href="/create" class="uk-button uk-button-primary">
+                <span uk-icon="icon: plus"></span> Create New Form
+            </a>
+        </div>
+    </div>
+    <div class="uk-margin">
+        <input 
+            type="search" 
+            name="search" 
+            class="uk-input uk-margin-bottom" 
+            placeholder="Search forms..."
+            hx-get="/search"
+            hx-trigger="keyup changed delay:500ms"
+            hx-target="#forms-table"
+            hx-indicator="#searching-indicator">
+        <div id="searching-indicator" class="uk-margin-bottom">
+            <span uk-spinner></span> Searching...
+        </div>
+        <div id="forms-table">
+            {{template "partials/form-table-partial.html" .}}
+        </div>
+    </div>
+
+    <style>
+        #searching-indicator {
+            display: none;
+        }
+        #searching-indicator.htmx-request {
+            display: block !important;
+        }
+    </style>
+</div>
+{{end}}

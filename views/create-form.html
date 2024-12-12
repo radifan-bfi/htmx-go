@@ -1,0 +1,32 @@
+{{define "content"}}
+<div class="uk-card uk-card-default uk-card-body">
+    <div class="uk-flex uk-flex-middle uk-margin-bottom">
+        <a href="/" class="uk-button uk-button-link uk-margin-right">
+            <span uk-icon="icon: arrow-left"></span>
+        </a>
+        <h1 class="uk-card-title uk-margin-remove">Create New Form</h1>
+    </div>
+    <form
+        hx-post="/create"
+        class="uk-form-stacked"
+        hx-target="#form-response"
+        hx-swap="innerHTML"
+    >
+        <div id="form-response"></div>
+        <div class="uk-margin">
+            <label class="uk-form-label" for="title">Form Title</label>
+            <div class="uk-form-controls">
+                <input class="uk-input" type="text" id="title" name="title" required>
+            </div>
+        </div>
+        <div class="uk-margin">
+            <label class="uk-form-label" for="schema">Form Schema (JSON)</label>
+            <div class="uk-form-controls">
+                <textarea class="uk-textarea" id="schema" name="schema" rows="10" required></textarea>
+                <small class="uk-text-muted">Enter a valid JSON Schema defining your form fields</small>
+            </div>
+        </div>
+        <button type="submit" class="uk-button uk-button-primary">Create Form</button>
+    </form>
+</div>
+{{end}}

@@ -1,0 +1,25 @@
+{{define "partials/form-table-partial.html"}}
+<table class="uk-table uk-table-divider uk-table-middle uk-table-hover">
+    <thead>
+        <tr>
+            <th class="uk-table-shrink">ID</th>
+            <th class="uk-table-expand">Title</th>
+            <th class="uk-width-medium">Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        {{range .Schemas}}
+        <tr>
+            <td>{{.ID}}</td>
+            <td>{{.Title}}</td>
+            <td>
+                <div class="uk-button-group">
+                    <a href="/{{.ID}}" class="uk-button uk-button-primary uk-button-small">Open Form</a>
+                    <a href="/{{.ID}}/submissions" class="uk-button uk-button-secondary uk-button-small uk-margin-left">View Submissions</a>
+                </div>
+            </td>
+        </tr>
+        {{end}}
+    </tbody>
+</table>
+{{end}}

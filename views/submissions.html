@@ -1,0 +1,48 @@
+{{define "content"}}
+<div class="uk-card uk-card-default uk-card-body">
+    <div class="uk-flex uk-flex-middle uk-margin-bottom">
+        <a href="/" class="uk-button uk-button-link uk-margin-right">
+            <span uk-icon="icon: arrow-left"></span>
+        </a>
+        <h1 class="uk-card-title uk-margin-remove">{{.FormTitle}}</h1>
+    </div>
+
+    <div 
+        id="submissions-list" 
+        class="uk-margin"
+    >
+        {{if .Submissions}}
+            <table class="uk-table uk-table-divider uk-table-middle uk-table-hover">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Submitted On</th>
+                        <th>Values</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{template "partials/submissions-partial.html" .}}
+                </tbody>
+            </table>
+        {{else}}
+            <div class="uk-alert uk-alert-primary" uk-alert>
+                <p>No submissions found for this form yet.</p>
+            </div>
+        {{end}}
+    </div>
+
+    <div id="loading-indicator" class="uk-text-center uk-margin">
+        <div uk-spinner></div>
+        <p>Loading more submissions...</p>
+    </div>
+
+    <style>
+        #loading-indicator {
+            display: none;
+        }
+        #loading-indicator.htmx-request {
+            display: block !important;
+        }
+    </style>
+</div>
+{{end}}

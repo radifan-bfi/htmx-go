@@ -1,0 +1,94 @@
+{{define "content"}}
+<div class="uk-card uk-card-default uk-card-body">
+    <div class="uk-flex uk-flex-middle uk-margin-bottom">
+        <a href="/" class="uk-button uk-button-link uk-margin-right">
+            <span uk-icon="icon: arrow-left"></span>
+        </a>
+        <h1 class="uk-card-title uk-margin-remove">{{.Schema.Title}}</h1>
+    </div>
+    <form
+        id="json-schema-form"
+        hx-post="/{{.ID}}/submit"
+        class="uk-form-stacked"
+        hx-target="#form-response"
+        hx-swap="innerHTML"
+        hx-on:input="localStorage.setItem('form_{{.ID}}', JSON.stringify(Object.fromEntries(new FormData(this))))"
+        hx-on:htmx:after-request="this.reset(); localStorage.removeItem('form_{{.ID}}'); htmx.remove(htmx.find('#form-response > .uk-alert-success'), 5000);"
+    >
+        <div id="form-response"></div>
+        {{template "formFields" dict "Fields" .Schema.Properties "Prefix" ""}}
+        <button type="submit" class="uk-button uk-button-primary">Submit</button>
+
+        <script>
+            htmx.onLoad((content) => {
+                const savedData = localStorage.getItem('form_{{.ID}}');
+                if (savedData) {
+                    const formData = JSON.parse(savedData);
+                    Object.entries(formData).forEach(([name, value]) => {
+                        const input = content.querySelector(`[name='${name}']`);
+                        if (input) input.value = value;
+                    });
+                }
+            });
+        </script>
+    </form>
+</div>
+{{end}}
+
+{{define "formFields"}}
+    {{range $fieldName, $field := .Fields}}
+        <div class="uk-margin">
+            {{if eq $field.Type "object"}}
+                <fieldset class="uk-fieldset">
+                    <legend class="uk-legend">{{$fieldName | toCapitalCase}}</legend>
+                    {{template "formFields" dict "Fields" $field.Properties "Prefix" (printf "%s%s." $.Prefix $fieldName)}}
+                </fieldset>
+            {{else if eq $field.Type "array"}}
+                <label class="uk-form-label" for="{{$.Prefix}}{{$fieldName}}">{{$fieldName | toCapitalCase}}</label>
+                <div class="uk-form-controls">
+                    <button type="button" class="uk-button uk-button-default uk-margin-small-bottom"
+                            hx-get="/form-array-item/{{$fieldName}}"
+                            hx-target="next div"
+                            hx-swap="beforeend">
+                        Add {{$fieldName}}
+                    </button>
+                    <div class="array-items"></div>
+                </div>
+            {{else}}
+                <label class="uk-form-label" for="{{$.Prefix}}{{$fieldName}}">{{$fieldName | toCapitalCase}}</label>
+                <div class="uk-form-controls">
+                    {{if $field.Enum}}
+                        <select 
+                            class="uk-select" 
+                            id="{{$.Prefix}}{{$fieldName}}" 
+                            name="{{$.Prefix}}{{$fieldName}}"
+                            hx-trigger="change"
+                        >
+                            {{range $enum := $field.Enum}}
+                                <option value="{{$enum}}">{{$enum}}</option>
+                            {{end}}
+                        </select>
+                    {{else}}
+                        <input 
+                            class="uk-input"
+                            type="{{if eq $field.Format "email"}}email{{else if eq $field.Format "date"}}date{{else if eq $field.Format "time"}}time{{else if eq $field.Format "datetime-local"}}datetime-local{{else if eq $field.Format "url"}}url{{else if eq $field.Type "number"}}number{{else if eq $field.Type "integer"}}number{{else}}text{{end}}"
+                            id="{{$.Prefix}}{{$fieldName}}"
+                            name="{{$.Prefix}}{{$fieldName}}"
+                            placeholder="{{$field.Description}}"
+                            hx-trigger="input"
+                            {{if $field.MinLength}}minlength="{{$field.MinLength}}"{{end}}
+                            {{if $field.MaxLength}}maxlength="{{$field.MaxLength}}"{{end}}
+                            {{if $field.Pattern}}pattern="{{$field.Pattern}}"{{end}}
+                            {{if $field.Minimum}}min="{{$field.Minimum}}"{{end}}
+                            {{if $field.Maximum}}max="{{$field.Maximum}}"{{end}}
+                            required
+                        >
+                    {{end}}
+                    {{if $field.Description}}
+                        <small class="uk-text-muted">{{$field.Description}}</small>
+                    {{end}}
+                </div>
+            {{end}}
+        </div>
+    {{end}}
+{{end}}

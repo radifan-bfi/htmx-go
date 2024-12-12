@@ -1,0 +1,6 @@
+{{define "partials/alerts/success-redirect.html"}}
+<div class='uk-alert uk-alert-success'>
+    {{.Message}}
+    <script>setTimeout(() => window.location.href = '{{.RedirectURL}}', {{.Delay}})</script>
+</div>
+{{end}}

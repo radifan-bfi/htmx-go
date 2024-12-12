@@ -1,0 +1,95 @@
+# Ignore Go build artifacts
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+
+# Ignore Go module files
+go.sum
+
+# Ignore Go workspace file
+go.work
+go.work.sum
+
+# Ignore IDE-specific files
+.idea/
+*.iml
+*.vscode/
+
+# Ignore OS-specific files
+.DS_Store
+Thumbs.db
+
+# Ignore frontend build artifacts
+/dist/
+/build/
+/public/dist/
+/public/build/
+
+# Ignore node.js dependencies
+node_modules/
+
+# Ignore Yarn and npm cache files
+.yarn/
+.pnp.*
+.cache/
+
+# Ignore log files
+*.log
+
+# Ignore database files
+*.db
+*.sqlite
+*.sqlite3
+
+# Ignore configuration files that may contain sensitive information
+*.env
+*.env.*
+config.json
+config.yaml
+
+# Ignore temporary files
+*.tmp
+*.swp
+
+# Ignore local development files
+.local/
+
+# Ignore Docker files
+Dockerfile.*
+docker-compose.*.yml
+.dockerignore
+
+# Ignore binary files
+*.bin
+
+# Ignore coverage reports
+coverage.out
+
+# Ignore GoLand/JetBrains IDE files
+*.idea/
+*.idea_modules/
+
+# Ignore VSCode workspace settings
+.vscode/
+
+# Ignore test cache
+/testdata/
+
+# Ignore any local overrides
+local_config.yaml
+
+# Ignore any other build artifacts
+/bin/
+/pkg/
+
+# Ignore any other temporary files
+*.bak
+
+# Ignore any other sensitive files
+secrets.yaml
+.aider*
+.env
